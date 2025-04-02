@@ -6,9 +6,12 @@ public class BirthdayGreeter {
     private final EmployeeRepository employeeRepository;
     private final Clock clock;
 
-    public BirthdayGreeter(EmployeeRepository employeeRepository, Clock clock) {
+    private Sender sender;
+
+    public BirthdayGreeter(EmployeeRepository employeeRepository, Clock clock, Sender sender) {
         this.employeeRepository = employeeRepository;
         this.clock = clock;
+        this.sender = sender;
     }
 
     public void sendGreetings() {
@@ -16,7 +19,7 @@ public class BirthdayGreeter {
         employeeRepository.findEmployeesBornOn(today)
                 .stream()
                 .map(employee -> emailFor(employee))
-                .forEach(email -> new EmailSender().send(email));
+                .forEach(email -> sender.send(email));
     }
 
     private Email emailFor(Employee employee) {

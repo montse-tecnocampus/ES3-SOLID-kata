@@ -1,6 +1,6 @@
 package com.codurance.dip;
 
-public class Email {
+public class Email implements ElementToSend{
     private final String to;
     private final String subject;
     private final String message;
@@ -11,14 +11,17 @@ public class Email {
         this.message = message;
     }
 
+    @Override
     public String getTo() {
         return to;
     }
 
+    @Override
     public String getSubject() {
         return subject;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
