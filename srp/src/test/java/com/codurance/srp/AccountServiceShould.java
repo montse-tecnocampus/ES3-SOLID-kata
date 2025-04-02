@@ -24,9 +24,9 @@ public class AccountServiceShould {
     private static final int NEGATIVE_AMOUNT = -POSITIVE_AMOUNT;
     private static final LocalDate TODAY = LocalDate.of(2017, 9, 6);
     private static final List<Transaction> TRANSACTIONS = Arrays.asList(
-        new Transaction(LocalDate.of(2014, 4, 1), 1000),
-        new Transaction(LocalDate.of(2014, 4, 2), -100),
-        new Transaction(LocalDate.of(2014, 4, 10), 500)
+            new Transaction(LocalDate.of(2014, 4, 1), 1000),
+            new Transaction(LocalDate.of(2014, 4, 2), -100),
+            new Transaction(LocalDate.of(2014, 4, 10), 500)
     );
 
     @Mock
@@ -39,19 +39,19 @@ public class AccountServiceShould {
     private Console console;
 
     private AccountService accountService;
+    private Printer printer;
 
     @Before
     public void setUp() {
-        accountService = new AccountService(transactionRepository, clock, console);
+        accountService = new AccountService(transactionRepository, clock);
+        printer = new Printer(console);
         given(clock.today()).willReturn(TODAY);
     }
 
 
     @Test
     public void deposit_amount_into_the_account() {
-
         accountService.deposit(POSITIVE_AMOUNT);
-
         verify(transactionRepository).add(refEq(new Transaction(TODAY, POSITIVE_AMOUNT)));
     }
 
@@ -68,7 +68,7 @@ public class AccountServiceShould {
     public void print_statement() {
         given(transactionRepository.all()).willReturn(TRANSACTIONS);
 
-        accountService.printStatement();
+        printer.printStatement(transactionRepository.all());
 
         InOrder inOrder = inOrder(console);
         inOrder.verify(console).printLine("DATE | AMOUNT | BALANCE");

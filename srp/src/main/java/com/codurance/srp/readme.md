@@ -1,0 +1,1 @@
+This solution removes attribute Printer from AccountService, and a client class is responsible for passing the transactions that need to be printed to the Printer class.
